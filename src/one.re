@@ -7,7 +7,7 @@ let convertToIntArray = rawInput => rawInput
   |> Js.String.split("")
   |> Array.map((b) => Int32.of_string(b) |> Int32.to_int);
 
-let sumMatches = (inc, ray) => {
+let sumMatches = (~inc, ~ray) => {
   let i = ref(-1);
   (ray |> Array.fold_left((sum, next) => {
     i := i^ + 1;
@@ -15,11 +15,11 @@ let sumMatches = (inc, ray) => {
   }, 0));
 };
 
-let calculate = (a: advent, inp: string) =>
-  switch a {
-  | PartTwo => inp |> convertToIntArray |> (ray) => sumMatches(Array.length(ray) / 2, ray)
-  | _ => inp |> convertToIntArray |> sumMatches(1)
+let calculate = (~advent: advent, ~input: string) =>
+  switch advent {
+  | PartTwo => input |> convertToIntArray |> (ray) => sumMatches(~inc=Array.length(ray) / 2, ~ray=ray)
+  | _ => input |> convertToIntArray |> (ray) => sumMatches(~inc=1, ~ray=ray)
   };
 
-calculate(PartOne, rawInput) |> Js.log;
-calculate(PartTwo, rawInput) |> Js.log;
+calculate(~advent=PartOne, ~input=rawInput) |> Js.log;
+calculate(~advent=PartTwo, ~input=rawInput) |> Js.log;
