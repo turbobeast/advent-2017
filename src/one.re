@@ -1,10 +1,4 @@
-include Defs;
-
-module DayOne: AdventCalculator = {
-  let convertToIntArray = rawInput =>
-    rawInput
-    |> Js.String.split("")
-    |> Array.map(b => Int32.of_string(b) |> Int32.to_int);
+module DayOne: Defs.AdventCalculator = {
   let sumMatches = (~inc, ~ray) => {
     let i = ref(-1);
     ray
@@ -23,12 +17,12 @@ module DayOne: AdventCalculator = {
          0
        );
   };
-  let calculate = (~advent: advent, ~input: string) =>
+  let calculate = (~advent: Defs.advent, ~input: string) =>
     switch advent {
     | PartTwo =>
       input
-      |> convertToIntArray
+      |> Defs.convertToIntArray
       |> (ray => sumMatches(~inc=Array.length(ray) / 2, ~ray))
-    | _ => input |> convertToIntArray |> (ray => sumMatches(~inc=1, ~ray))
+    | _ => input |> Defs.convertToIntArray |> (ray => sumMatches(~inc=1, ~ray))
     };
 };
