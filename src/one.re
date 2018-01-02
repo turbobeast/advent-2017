@@ -1,9 +1,6 @@
 include Defs;
 
 module DayOne: AdventCalculator = {
-  type advent =
-    | PartOne
-    | PartTwo;
   let convertToIntArray = rawInput =>
     rawInput
     |> Js.String.split("")

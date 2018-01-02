@@ -1,6 +1,7 @@
+type advent =
+  | PartOne
+  | PartTwo;
+
 module type AdventCalculator = {
-  type advent =
-    | PartOne
-    | PartTwo;
   let calculate: (~advent: advent, ~input: string) => int;
 };
