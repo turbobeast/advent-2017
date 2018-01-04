@@ -7,32 +7,21 @@ module DayTwo: Defs.AdventCalculator = {
          |> Js.String.split("\t")
          |> Array.map(b => b |> Int32.of_string |> Int32.to_int)
        );
-  let findSmallest = ray =>
-    ray
+  let largestDiff = row =>
+    row
     |> Array.fold_left(
-         (a, b) =>
-           switch (b < a) {
-           | true => b
-           | _ => a
+         ((largest, smallest), b) =>
+           switch (b > largest, b < smallest) {
+           | (true, true) => (b, b)
+           | (true, _) => (b, smallest)
+           | (_, true) => (largest, b)
+           | _ => (largest, smallest)
            },
-         Int32.max_int |> Int32.to_int
-       );
-  let findLargest = ray =>
-    ray
-    |> Array.fold_left(
-         (a, b) =>
-           switch (b > a) {
-           | true => b
-           | _ => a
-           },
-         Int32.min_int |> Int32.to_int
-       );
+         (Int32.min_int |> Int32.to_int, Int32.max_int |> Int32.to_int)
+       )
+    |> (((largest, smallest)) => largest - smallest);
   let sumDiff = ray =>
-    ray
-    |> Array.fold_left(
-         (acc, row) => acc + (findLargest(row) - findSmallest(row)),
-         0
-       );
+    ray |> Array.fold_left((acc, row) => acc + (row |> largestDiff), 0);
   let calculate = (~advent: Defs.advent, ~input: string) =>
     switch advent {
     | _ => input |> make2dArray |> sumDiff
