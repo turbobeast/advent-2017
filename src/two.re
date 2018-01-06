@@ -54,8 +54,9 @@ module DayTwo: Defs.AdventCalculator = {
     |> Array.fold_left(
          (product, firstVal) => {
            i := i^ + 1;
-           let stop = (row |> Array.length) - (i^ + 1);
-           let matchers = Array.sub(row, i^ + 1, stop);
+           let start = i^ + 1;
+           let stop = (row |> Array.length) - start;
+           let matchers = Array.sub(row, start, stop);
            switch (findMatch(firstVal, matchers)) {
            | Some(matchVal) => Some(firstVal / matchVal)
            | _ => product
