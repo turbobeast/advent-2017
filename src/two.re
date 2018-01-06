@@ -37,43 +37,50 @@ module DayTwo: Defs.AdventCalculator = {
          )
     | _ => (0, 0)
     };
+  let findMatch = (firstVal, subRow) =>
+    subRow
+    |> Array.fold_left(
+         (match, nextVal) =>
+           switch (match, firstVal mod nextVal == 0) {
+           | (Some(_m), _) => match
+           | (_, true) => Some(nextVal)
+           | _ => None
+           },
+         None
+       );
   let evenDivisorProduct = row => {
     let i = ref(-1);
-    let product =
-      row
-      |> Array.fold_left(
-           (product, firstVal) => {
-             i := i^ + 1;
-             let stop = (row |> Array.length) - (i^ + 1);
-             let matchers = Array.sub(row, i^ + 1, stop);
-             let match =
-               matchers
-               |> Array.fold_left(
-                    (match, nextVal) =>
-                      switch (firstVal mod nextVal == 0) {
-                      | true => Some(nextVal)
-                      | _ => match
-                      },
-                    None
-                  );
-             switch match {
-             | Some(matchVal) => Some(firstVal / matchVal)
-             | _ => product
-             };
-           },
-           None
-         );
-    switch product {
-    | Some(i) => i
-    | None => 0
-    };
+    row
+    |> Array.fold_left(
+         (product, firstVal) => {
+           i := i^ + 1;
+           let stop = (row |> Array.length) - (i^ + 1);
+           let matchers = Array.sub(row, i^ + 1, stop);
+           switch (findMatch(firstVal, matchers)) {
+           | Some(matchVal) => Some(firstVal / matchVal)
+           | _ => product
+           };
+         },
+         None
+       );
   };
   let largestDiff = row =>
     row |> largestSmallest |> (((largest, smallest)) => largest - smallest);
   let sumDiff = ray =>
     ray |> Array.fold_left((acc, row) => acc + (row |> largestDiff), 0);
   let sumProducts = ray =>
-    ray |> Array.fold_left((acc, row) => acc + (row |> evenDivisorProduct), 0);
+    ray
+    |> Array.fold_left(
+         (acc, row) =>
+           acc
+           + (
+             switch (evenDivisorProduct(row)) {
+             | Some(i) => i
+             | None => 0
+             }
+           ),
+         0
+       );
   let calculate = (~advent: Defs.advent, ~input: string) =>
     switch advent {
     | PartTwo => input |> make2dArray |> sortNestedRows |> sumProducts
