@@ -37,7 +37,7 @@ module DayTwo: Defs.AdventCalculator = {
          )
     | _ => (0, 0)
     };
-  let findMatch = (firstVal, subRow) =>
+  let findEvenDivisor = (firstVal, subRow) =>
     subRow
     |> Array.fold_left(
          (match, nextVal) =>
@@ -57,7 +57,7 @@ module DayTwo: Defs.AdventCalculator = {
            let start = i^ + 1;
            let stop = (row |> Array.length) - start;
            let matchers = Array.sub(row, start, stop);
-           switch (findMatch(firstVal, matchers)) {
+           switch (findEvenDivisor(firstVal, matchers)) {
            | Some(matchVal) => Some(firstVal / matchVal)
            | _ => product
            };
