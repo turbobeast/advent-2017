@@ -17,13 +17,15 @@ module DayThree: Defs.AdventCalculator = {
          wallSize
        );
   let getSpiralDimensions = (square: int) : (int, int, int) => {
-    let rec buildNextLayer = (gridSize, wallInc, layerNum, layerSize)  => {
-      switch(gridSize < square) {
-      | true => buildNextLayer(gridSize + (wallInc * 4) + 4, wallInc + 2, layerNum + 1, (wallInc * 4) + 4)
+    let rec buildNextLayer = (gridSize, wallInc, layerNum, layerSize) =>
+      switch (gridSize < square) {
+      | true =>
+        wallInc
+        * 4
+        + 4
+        |> (ls => buildNextLayer(gridSize + ls, wallInc + 2, layerNum + 1, ls))
       | _ => (gridSize, layerSize, layerNum)
-      }
-    };
-
+      };
     buildNextLayer(1, 1, 0, 1);
   };
   let distanceFromCenterOfSpiral = (square: int) => {
