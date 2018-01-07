@@ -20,7 +20,6 @@ module DayTwo: Defs.AdventCalculator = {
     row;
   };
   let sortNestedRows = rows => rows |> Array.map(sortAndReturn);
-  /* let evenDivisors = row =>  */
   let largestSmallest = row =>
     switch (row |> Array.to_list) {
     | [first, ...rest] =>
