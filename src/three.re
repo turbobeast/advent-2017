@@ -5,7 +5,10 @@ module DayThree: Defs.AdventCalculator = {
     | _ => i
     };
   let makeCenters = (start: int, layerSize: int) =>
-    Array.mapi((i, _b) => start + (i + 1) * (layerSize / 4), Array.make(4, 0));
+    Array.mapi(
+      (i, _b) => start + (i + 1) * (layerSize / 4),
+      Array.make(4, 0),
+    );
   let distanceFromCenterOfWall = (centers, wallSize, square) =>
     centers
     |> Array.fold_left(
@@ -14,7 +17,7 @@ module DayThree: Defs.AdventCalculator = {
            | true => square - center |> abs
            | _ => dist
            },
-         wallSize
+         wallSize,
        );
   let getSpiralDimensions = (square: int) : (int, int, int) => {
     let rec buildNextLayer = (gridSize, wallInc, layerNum, layerSize) =>
@@ -23,7 +26,9 @@ module DayThree: Defs.AdventCalculator = {
         wallInc
         * 4
         + 4
-        |> (ls => buildNextLayer(gridSize + ls, wallInc + 2, layerNum + 1, ls))
+        |> (
+          ls => buildNextLayer(gridSize + ls, wallInc + 2, layerNum + 1, ls)
+        )
       | _ => (gridSize, layerSize, layerNum)
       };
     buildNextLayer(1, 1, 0, 1);
@@ -39,7 +44,7 @@ module DayThree: Defs.AdventCalculator = {
     );
   };
   let calculate = (~advent: Defs.advent, ~input: string) =>
-    switch advent {
+    switch (advent) {
     | _ =>
       input |> Int32.of_string |> Int32.to_int |> distanceFromCenterOfSpiral
     };
