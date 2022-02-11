@@ -20,7 +20,7 @@ npm run watch
 - Install merlin and ocp-indent
 ```bash
 opam install merlin
-opam instll ocp-indent
+opam install ocp-indent
 ```
 
 - Configure your env
